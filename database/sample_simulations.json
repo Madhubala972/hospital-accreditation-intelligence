@@ -1,0 +1,64 @@
+[
+  {
+    "scenarioName": "ICU High Surge Scenario (100% Occupancy)",
+    "department": "ICU",
+    "parameters": {
+      "patientArrivalRatePerHour": 4.5,
+      "nursesOnDuty": 10,
+      "doctorsOnDuty": 3,
+      "bedCapacity": 30,
+      "targetOccupancy": 100
+    },
+    "baselineMetrics": {
+      "occupancyRate": 85.0,
+      "avgWaitingTimeMinutes": 24.5,
+      "nurseWorkloadUtilization": 74.0,
+      "queueLength": 2.1,
+      "predictedRiskScore": 58.0
+    },
+    "simulatedMetrics": {
+      "occupancyRate": 100.0,
+      "avgWaitingTimeMinutes": 68.4,
+      "nurseWorkloadUtilization": 96.2,
+      "queueLength": 8.7,
+      "predictedRiskScore": 89.5,
+      "bottlenecks": [
+        "Bed availability exhaustion at T+140m",
+        "Nurse triage overload (> 95% utilization)",
+        "Medication verification delay escalated to 54 minutes"
+      ]
+    },
+    "riskDelta": 31.5,
+    "accreditationImpact": "Critical Risk - Violates NABH Safe Staffing ratio & maximum triage waiting threshold."
+  },
+  {
+    "scenarioName": "Emergency Overcrowding Mitigation (Staff +3)",
+    "department": "Emergency",
+    "parameters": {
+      "patientArrivalRatePerHour": 22.0,
+      "nursesOnDuty": 15,
+      "doctorsOnDuty": 6,
+      "bedCapacity": 50,
+      "targetOccupancy": 82
+    },
+    "baselineMetrics": {
+      "occupancyRate": 92.0,
+      "avgWaitingTimeMinutes": 52.0,
+      "nurseWorkloadUtilization": 89.0,
+      "queueLength": 14.2,
+      "predictedRiskScore": 79.0
+    },
+    "simulatedMetrics": {
+      "occupancyRate": 81.0,
+      "avgWaitingTimeMinutes": 26.5,
+      "nurseWorkloadUtilization": 71.0,
+      "queueLength": 4.1,
+      "predictedRiskScore": 44.0,
+      "bottlenecks": [
+        "Slight triage backlog during 18:00 - 20:00 shift change"
+      ]
+    },
+    "riskDelta": -35.0,
+    "accreditationImpact": "Substantial Improvement - Restores compliance with NABH Door-to-Doctor standard (<30m)."
+  }
+]

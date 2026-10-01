@@ -1,0 +1,730 @@
+[
+  {
+    "pathwayId": "PATH-ICU-001",
+    "name": "ICU Sepsis & Critical Resuscitation Pathway",
+    "department": "ICU",
+    "description": "Standard clinical care pathway for septic shock and critical ICU admission.",
+    "expectedSteps": [
+      "Patient Admission",
+      "Triage & Vital Signs",
+      "Blood Culture & Lactate Test",
+      "Broad-Spectrum Antibiotics",
+      "IV Fluid Resuscitation",
+      "Medication Verification",
+      "Continuous Hemodynamic Monitoring",
+      "Consultant Review",
+      "ICU Step-down / Discharge"
+    ],
+    "benchmarkDurationMinutes": 240,
+    "conformanceTarget": 90,
+    "currentConformance": 71,
+    "activeTraces": 151,
+    "deviatingTraces": 50,
+    "commonDeviations": [
+      {
+        "type": "Skipped Activity",
+        "activity": "Medication Verification",
+        "frequency": 28,
+        "impact": "High Risk - Increases medication adverse event risk by 35%"
+      },
+      {
+        "type": "Delayed Step",
+        "activity": "Broad-Spectrum Antibiotics",
+        "avgDelayMinutes": 45,
+        "frequency": 22,
+        "impact": "Critical Risk - Antibiotics delayed > 1 hour past lactate test"
+      },
+      {
+        "type": "Sequence Inversion",
+        "activity": "IV Fluid before Lactate Sample",
+        "frequency": 14,
+        "impact": "Moderate Risk - Skews baseline lab telemetry"
+      }
+    ],
+    "sampleTraces": [
+      {
+        "caseId": "CASE-9051",
+        "isConformant": false,
+        "deviationType": "Missing: Patient Admission, Triage & Vital Signs, Blood Culture & Lactate Test, Broad-Spectrum Antibiotics, Medication Verification, Continuous Hemodynamic Monitoring, Consultant Review, ICU Step-down / Discharge",
+        "events": [
+          {
+            "activity": "Admission to ICU",
+            "timestamp": "2026-10-01T05:56:17.963Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Blood Culture Taken",
+            "timestamp": "2026-10-01T06:11:17.963Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Broad Spectrum Antibiotic",
+            "timestamp": "2026-10-01T06:26:17.963Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Lactate Measurement",
+            "timestamp": "2026-10-01T06:41:17.963Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "IV Fluid Resuscitation",
+            "timestamp": "2026-10-01T06:56:17.963Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Intensive Monitoring",
+            "timestamp": "2026-10-01T07:11:17.963Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          }
+        ],
+        "notes": "Skipped activities: Patient Admission, Triage & Vital Signs, Blood Culture & Lactate Test, Broad-Spectrum Antibiotics, Medication Verification, Continuous Hemodynamic Monitoring, Consultant Review, ICU Step-down / Discharge"
+      },
+      {
+        "caseId": "CASE-3839",
+        "isConformant": false,
+        "deviationType": "Missing: Patient Admission, Triage & Vital Signs, Blood Culture & Lactate Test, Broad-Spectrum Antibiotics, Medication Verification, Continuous Hemodynamic Monitoring, Consultant Review, ICU Step-down / Discharge",
+        "events": [
+          {
+            "activity": "Admission to ICU",
+            "timestamp": "2026-10-01T05:56:15.783Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Blood Culture Taken",
+            "timestamp": "2026-10-01T06:11:15.783Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Broad Spectrum Antibiotic",
+            "timestamp": "2026-10-01T06:26:15.783Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Lactate Measurement",
+            "timestamp": "2026-10-01T06:41:15.783Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "IV Fluid Resuscitation",
+            "timestamp": "2026-10-01T06:56:15.783Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Intensive Monitoring",
+            "timestamp": "2026-10-01T07:11:15.783Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          }
+        ],
+        "notes": "Skipped activities: Patient Admission, Triage & Vital Signs, Blood Culture & Lactate Test, Broad-Spectrum Antibiotics, Medication Verification, Continuous Hemodynamic Monitoring, Consultant Review, ICU Step-down / Discharge"
+      },
+      {
+        "caseId": "CASE-5938",
+        "isConformant": false,
+        "deviationType": "Missing: Patient Admission, Triage & Vital Signs, Blood Culture & Lactate Test, Broad-Spectrum Antibiotics, Medication Verification, Continuous Hemodynamic Monitoring, Consultant Review, ICU Step-down / Discharge",
+        "events": [
+          {
+            "activity": "Admission to ICU",
+            "timestamp": "2026-10-01T05:56:13.270Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Blood Culture Taken",
+            "timestamp": "2026-10-01T06:11:13.270Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Broad Spectrum Antibiotic",
+            "timestamp": "2026-10-01T06:26:13.270Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Lactate Measurement",
+            "timestamp": "2026-10-01T06:41:13.270Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "IV Fluid Resuscitation",
+            "timestamp": "2026-10-01T06:56:13.271Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Intensive Monitoring",
+            "timestamp": "2026-10-01T07:11:13.271Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          }
+        ],
+        "notes": "Skipped activities: Patient Admission, Triage & Vital Signs, Blood Culture & Lactate Test, Broad-Spectrum Antibiotics, Medication Verification, Continuous Hemodynamic Monitoring, Consultant Review, ICU Step-down / Discharge"
+      },
+      {
+        "caseId": "CASE-TEST-999",
+        "isConformant": false,
+        "deviationType": "Missing: Patient Admission, Triage & Vital Signs, Blood Culture & Lactate Test, Broad-Spectrum Antibiotics, IV Fluid Resuscitation, Medication Verification, Continuous Hemodynamic Monitoring, Consultant Review, ICU Step-down / Discharge",
+        "events": [
+          {
+            "activity": "Arrival with Chest Pain",
+            "timestamp": "2026-09-12T04:11:46.306Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "12-Lead ECG <= 10m",
+            "timestamp": "2026-09-12T04:26:46.306Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Delayed Cardiology Consult",
+            "timestamp": "2026-09-12T04:41:46.306Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Aspirin / Heparin Initiation",
+            "timestamp": "2026-09-12T04:56:46.306Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Cath Lab Activation",
+            "timestamp": "2026-09-12T05:11:46.306Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "PCI Intervention",
+            "timestamp": "2026-09-12T05:26:46.306Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          }
+        ],
+        "notes": "Skipped activities: Patient Admission, Triage & Vital Signs, Blood Culture & Lactate Test, Broad-Spectrum Antibiotics, IV Fluid Resuscitation, Medication Verification, Continuous Hemodynamic Monitoring, Consultant Review, ICU Step-down / Discharge"
+      },
+      {
+        "caseId": "CASE-TEST-999",
+        "isConformant": false,
+        "deviationType": "Missing: Patient Admission, Triage & Vital Signs, Blood Culture & Lactate Test, Broad-Spectrum Antibiotics, IV Fluid Resuscitation, Medication Verification, Continuous Hemodynamic Monitoring, Consultant Review, ICU Step-down / Discharge",
+        "events": [
+          {
+            "activity": "Arrival with Chest Pain",
+            "timestamp": "2026-09-12T04:11:11.171Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "12-Lead ECG <= 10m",
+            "timestamp": "2026-09-12T04:26:11.171Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Delayed Cardiology Consult",
+            "timestamp": "2026-09-12T04:41:11.171Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Aspirin / Heparin Initiation",
+            "timestamp": "2026-09-12T04:56:11.171Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Cath Lab Activation",
+            "timestamp": "2026-09-12T05:11:11.171Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "PCI Intervention",
+            "timestamp": "2026-09-12T05:26:11.171Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          }
+        ],
+        "notes": "Skipped activities: Patient Admission, Triage & Vital Signs, Blood Culture & Lactate Test, Broad-Spectrum Antibiotics, IV Fluid Resuscitation, Medication Verification, Continuous Hemodynamic Monitoring, Consultant Review, ICU Step-down / Discharge"
+      },
+      {
+        "caseId": "CASE-TEST-999",
+        "isConformant": false,
+        "deviationType": "Missing: Patient Admission, Triage & Vital Signs, Blood Culture & Lactate Test, Broad-Spectrum Antibiotics, IV Fluid Resuscitation, Medication Verification, Continuous Hemodynamic Monitoring, Consultant Review, ICU Step-down / Discharge",
+        "events": [
+          {
+            "activity": "Arrival with Chest Pain",
+            "timestamp": "2026-09-12T04:08:14.497Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "12-Lead ECG <= 10m",
+            "timestamp": "2026-09-12T04:23:14.497Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Delayed Cardiology Consult",
+            "timestamp": "2026-09-12T04:38:14.497Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Aspirin / Heparin Initiation",
+            "timestamp": "2026-09-12T04:53:14.497Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Cath Lab Activation",
+            "timestamp": "2026-09-12T05:08:14.497Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "PCI Intervention",
+            "timestamp": "2026-09-12T05:23:14.497Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          }
+        ],
+        "notes": "Skipped activities: Patient Admission, Triage & Vital Signs, Blood Culture & Lactate Test, Broad-Spectrum Antibiotics, IV Fluid Resuscitation, Medication Verification, Continuous Hemodynamic Monitoring, Consultant Review, ICU Step-down / Discharge"
+      },
+      {
+        "caseId": "CASE-TEST-999",
+        "isConformant": false,
+        "deviationType": "Missing: Patient Admission, Triage & Vital Signs, Blood Culture & Lactate Test, Broad-Spectrum Antibiotics, IV Fluid Resuscitation, Medication Verification, Continuous Hemodynamic Monitoring, Consultant Review, ICU Step-down / Discharge",
+        "events": [
+          {
+            "activity": "Arrival with Chest Pain",
+            "timestamp": "2026-09-12T04:07:31.082Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "12-Lead ECG <= 10m",
+            "timestamp": "2026-09-12T04:22:31.082Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Delayed Cardiology Consult",
+            "timestamp": "2026-09-12T04:37:31.082Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Aspirin / Heparin Initiation",
+            "timestamp": "2026-09-12T04:52:31.082Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Cath Lab Activation",
+            "timestamp": "2026-09-12T05:07:31.082Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "PCI Intervention",
+            "timestamp": "2026-09-12T05:22:31.082Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          }
+        ],
+        "notes": "Skipped activities: Patient Admission, Triage & Vital Signs, Blood Culture & Lactate Test, Broad-Spectrum Antibiotics, IV Fluid Resuscitation, Medication Verification, Continuous Hemodynamic Monitoring, Consultant Review, ICU Step-down / Discharge"
+      },
+      {
+        "caseId": "CASE-TEST-999",
+        "isConformant": false,
+        "deviationType": "Missing: Patient Admission, Triage & Vital Signs, Blood Culture & Lactate Test, Broad-Spectrum Antibiotics, IV Fluid Resuscitation, Medication Verification, Continuous Hemodynamic Monitoring, Consultant Review, ICU Step-down / Discharge",
+        "events": [
+          {
+            "activity": "Arrival with Chest Pain",
+            "timestamp": "2026-09-12T04:06:46.449Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "12-Lead ECG <= 10m",
+            "timestamp": "2026-09-12T04:21:46.449Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Delayed Cardiology Consult",
+            "timestamp": "2026-09-12T04:36:46.449Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Aspirin / Heparin Initiation",
+            "timestamp": "2026-09-12T04:51:46.449Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Cath Lab Activation",
+            "timestamp": "2026-09-12T05:06:46.449Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "PCI Intervention",
+            "timestamp": "2026-09-12T05:21:46.449Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          }
+        ],
+        "notes": "Skipped activities: Patient Admission, Triage & Vital Signs, Blood Culture & Lactate Test, Broad-Spectrum Antibiotics, IV Fluid Resuscitation, Medication Verification, Continuous Hemodynamic Monitoring, Consultant Review, ICU Step-down / Discharge"
+      },
+      {
+        "caseId": "CASE-TEST-999",
+        "isConformant": false,
+        "deviationType": "Missing: Patient Admission, Triage & Vital Signs, Blood Culture & Lactate Test, Broad-Spectrum Antibiotics, IV Fluid Resuscitation, Medication Verification, Continuous Hemodynamic Monitoring, Consultant Review, ICU Step-down / Discharge",
+        "events": [
+          {
+            "activity": "Arrival with Chest Pain",
+            "timestamp": "2026-09-12T04:05:27.639Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "12-Lead ECG <= 10m",
+            "timestamp": "2026-09-12T04:20:27.639Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Delayed Cardiology Consult",
+            "timestamp": "2026-09-12T04:35:27.639Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Aspirin / Heparin Initiation",
+            "timestamp": "2026-09-12T04:50:27.639Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Cath Lab Activation",
+            "timestamp": "2026-09-12T05:05:27.639Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "PCI Intervention",
+            "timestamp": "2026-09-12T05:20:27.639Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          }
+        ],
+        "notes": "Skipped activities: Patient Admission, Triage & Vital Signs, Blood Culture & Lactate Test, Broad-Spectrum Antibiotics, IV Fluid Resuscitation, Medication Verification, Continuous Hemodynamic Monitoring, Consultant Review, ICU Step-down / Discharge"
+      },
+      {
+        "caseId": "P-ICU-101",
+        "isConformant": false,
+        "deviationType": "Skipped Step & Delay",
+        "events": [
+          {
+            "activity": "Patient Admission",
+            "timestamp": "2026-03-01T08:15:00Z",
+            "resource": "Nurse-A",
+            "duration": 10
+          },
+          {
+            "activity": "Triage & Vital Signs",
+            "timestamp": "2026-03-01T08:25:00Z",
+            "resource": "Nurse-A",
+            "duration": 15
+          },
+          {
+            "activity": "Blood Culture & Lactate Test",
+            "timestamp": "2026-03-01T08:40:00Z",
+            "resource": "Lab-Tech",
+            "duration": 20
+          },
+          {
+            "activity": "IV Fluid Resuscitation",
+            "timestamp": "2026-03-01T09:00:00Z",
+            "resource": "Nurse-B",
+            "duration": 40
+          },
+          {
+            "activity": "Broad-Spectrum Antibiotics",
+            "timestamp": "2026-03-01T10:15:00Z",
+            "resource": "Dr-Patel",
+            "duration": 15
+          },
+          {
+            "activity": "Continuous Hemodynamic Monitoring",
+            "timestamp": "2026-03-01T10:30:00Z",
+            "resource": "Nurse-B",
+            "duration": 180
+          },
+          {
+            "activity": "Consultant Review",
+            "timestamp": "2026-03-01T13:30:00Z",
+            "resource": "Dr-Sharma",
+            "duration": 30
+          }
+        ],
+        "notes": "Medication Verification was omitted prior to Antibiotics infusion."
+      },
+      {
+        "caseId": "P-ICU-102",
+        "isConformant": true,
+        "deviationType": "None",
+        "events": [
+          {
+            "activity": "Patient Admission",
+            "timestamp": "2026-03-01T09:00:00Z",
+            "resource": "Nurse-C",
+            "duration": 8
+          },
+          {
+            "activity": "Triage & Vital Signs",
+            "timestamp": "2026-03-01T09:08:00Z",
+            "resource": "Nurse-C",
+            "duration": 12
+          },
+          {
+            "activity": "Blood Culture & Lactate Test",
+            "timestamp": "2026-03-01T09:20:00Z",
+            "resource": "Lab-Tech",
+            "duration": 15
+          },
+          {
+            "activity": "Broad-Spectrum Antibiotics",
+            "timestamp": "2026-03-01T09:35:00Z",
+            "resource": "Dr-Patel",
+            "duration": 10
+          },
+          {
+            "activity": "IV Fluid Resuscitation",
+            "timestamp": "2026-03-01T09:45:00Z",
+            "resource": "Nurse-C",
+            "duration": 30
+          },
+          {
+            "activity": "Medication Verification",
+            "timestamp": "2026-03-01T10:15:00Z",
+            "resource": "Pharmacist-K",
+            "duration": 10
+          },
+          {
+            "activity": "Continuous Hemodynamic Monitoring",
+            "timestamp": "2026-03-01T10:25:00Z",
+            "resource": "Nurse-C",
+            "duration": 120
+          },
+          {
+            "activity": "Consultant Review",
+            "timestamp": "2026-03-01T12:25:00Z",
+            "resource": "Dr-Sharma",
+            "duration": 25
+          },
+          {
+            "activity": "ICU Step-down / Discharge",
+            "timestamp": "2026-03-01T12:50:00Z",
+            "resource": "Nurse-C",
+            "duration": 15
+          }
+        ],
+        "notes": "Full conformance to NABH clinical pathway guidelines."
+      },
+      {
+        "caseId": "P-ICU-103",
+        "isConformant": false,
+        "deviationType": "Skipped Activity",
+        "events": [
+          {
+            "activity": "Patient Admission",
+            "timestamp": "2026-03-01T11:00:00Z",
+            "resource": "Nurse-D",
+            "duration": 12
+          },
+          {
+            "activity": "Triage & Vital Signs",
+            "timestamp": "2026-03-01T11:12:00Z",
+            "resource": "Nurse-D",
+            "duration": 10
+          },
+          {
+            "activity": "Broad-Spectrum Antibiotics",
+            "timestamp": "2026-03-01T11:22:00Z",
+            "resource": "Dr-Patel",
+            "duration": 15
+          },
+          {
+            "activity": "Continuous Hemodynamic Monitoring",
+            "timestamp": "2026-03-01T11:37:00Z",
+            "resource": "Nurse-D",
+            "duration": 150
+          },
+          {
+            "activity": "Consultant Review",
+            "timestamp": "2026-03-01T14:07:00Z",
+            "resource": "Dr-Sharma",
+            "duration": 30
+          }
+        ],
+        "notes": "Blood Culture test skipped prior to antibiotic administration."
+      }
+    ]
+  },
+  {
+    "pathwayId": "PATH-EMG-002",
+    "name": "Emergency Acute Chest Pain Protocol",
+    "department": "Emergency",
+    "description": "Acute coronary syndrome triage, ECG acquisition within 10 minutes, and cardiac enzyme panel.",
+    "expectedSteps": [
+      "Arrival & Fast-track Registration",
+      "12-Lead ECG Acquisition",
+      "Emergency Physician Assessment",
+      "Troponin & Cardiac Biomarkers",
+      "Aspirin/Antiplatelet Therapy",
+      "Cardiology Consultation",
+      "Cath Lab Transfer or Ward Admission"
+    ],
+    "benchmarkDurationMinutes": 60,
+    "conformanceTarget": 95,
+    "currentConformance": 68,
+    "activeTraces": 211,
+    "deviatingTraces": 68,
+    "commonDeviations": [
+      {
+        "type": "Door-to-ECG Delay",
+        "activity": "12-Lead ECG Acquisition",
+        "avgDelayMinutes": 22,
+        "frequency": 45,
+        "impact": "Critical Risk - Standard threshold is < 10 mins; actual is 22 mins"
+      },
+      {
+        "type": "Skipped Order",
+        "activity": "Troponin Biomarker Re-test",
+        "frequency": 24,
+        "impact": "High Risk - 3-hour delta troponin omitted"
+      }
+    ],
+    "sampleTraces": [
+      {
+        "caseId": "CASE-9255",
+        "isConformant": false,
+        "deviationType": "Missing: Arrival & Fast-track Registration, 12-Lead ECG Acquisition, Emergency Physician Assessment, Troponin & Cardiac Biomarkers, Aspirin/Antiplatelet Therapy, Cardiology Consultation, Cath Lab Transfer or Ward Admission",
+        "events": [
+          {
+            "activity": "Door Arrival",
+            "timestamp": "2026-09-30T04:43:23.693Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Diagnostic Blood Test",
+            "timestamp": "2026-09-30T04:58:23.693Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Medication Administration",
+            "timestamp": "2026-09-30T05:13:23.693Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          },
+          {
+            "activity": "Admission Decision",
+            "timestamp": "2026-09-30T05:28:23.693Z",
+            "resource": "Staff-Duty",
+            "duration": 15
+          }
+        ],
+        "notes": "Skipped activities: Arrival & Fast-track Registration, 12-Lead ECG Acquisition, Emergency Physician Assessment, Troponin & Cardiac Biomarkers, Aspirin/Antiplatelet Therapy, Cardiology Consultation, Cath Lab Transfer or Ward Admission"
+      },
+      {
+        "caseId": "P-EMG-201",
+        "isConformant": false,
+        "deviationType": "Delayed Triage & ECG",
+        "events": [
+          {
+            "activity": "Arrival & Fast-track Registration",
+            "timestamp": "2026-03-01T14:00:00Z",
+            "resource": "Desk-1",
+            "duration": 20
+          },
+          {
+            "activity": "12-Lead ECG Acquisition",
+            "timestamp": "2026-03-01T14:28:00Z",
+            "resource": "Nurse-E",
+            "duration": 10
+          },
+          {
+            "activity": "Emergency Physician Assessment",
+            "timestamp": "2026-03-01T14:40:00Z",
+            "resource": "Dr-Khan",
+            "duration": 20
+          },
+          {
+            "activity": "Troponin & Cardiac Biomarkers",
+            "timestamp": "2026-03-01T15:00:00Z",
+            "resource": "Lab-Tech",
+            "duration": 35
+          },
+          {
+            "activity": "Cath Lab Transfer or Ward Admission",
+            "timestamp": "2026-03-01T15:45:00Z",
+            "resource": "Dr-Khan",
+            "duration": 15
+          }
+        ],
+        "notes": "Door-to-ECG time took 28 minutes due to registration desk backlog."
+      }
+    ]
+  },
+  {
+    "pathwayId": "PATH-SUR-003",
+    "name": "Surgical Safety Checklist & Perioperative Care",
+    "department": "Surgery",
+    "description": "WHO surgical safety checklist execution: Sign-in, Time-out, and Sign-out.",
+    "expectedSteps": [
+      "Pre-Op Anesthesia Assessment",
+      "Sign-in (Patient Verification)",
+      "Prophylactic Antibiotic (within 60m)",
+      "Time-out (Team Briefing)",
+      "Surgical Procedure",
+      "Sign-out (Instrument Count)",
+      "PACU Recovery Admission"
+    ],
+    "benchmarkDurationMinutes": 180,
+    "conformanceTarget": 98,
+    "currentConformance": 82,
+    "activeTraces": 95,
+    "deviatingTraces": 17,
+    "commonDeviations": [
+      {
+        "type": "Timing Violation",
+        "activity": "Prophylactic Antibiotic",
+        "avgDelayMinutes": 18,
+        "frequency": 11,
+        "impact": "Moderate Risk - Administered < 15 mins before incision"
+      }
+    ],
+    "sampleTraces": []
+  }
+]

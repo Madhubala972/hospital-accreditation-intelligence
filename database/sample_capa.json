@@ -1,0 +1,175 @@
+[
+  {
+    "_id": "capa-1",
+    "title": "Enforce Barcode Verification for High-Risk Sepsis Antibiotics",
+    "description": "24% of ICU patient pathways bypassed mandatory dual-nurse verification step before IV antibiotic administration, breaching NABH-COP-01.",
+    "department": "ICU",
+    "priority": "CRITICAL",
+    "stage": "BACKLOG",
+    "standardCode": "NABH-COP-01",
+    "standardBody": "NABH",
+    "assignee": {
+      "name": "Dr. Sarah Jenkins",
+      "role": "Accreditation Officer",
+      "avatar": "SJ"
+    },
+    "dueDate": "2026-10-08T00:00:00.000Z",
+    "estimatedRiskReduction": 40.5,
+    "checklists": [
+      { "text": "Configure mandatory barcode check in EHR workflow", "completed": false },
+      { "text": "Deploy 12 wireless scanning terminals to ICU bays", "completed": false },
+      { "text": "Conduct nurse safety protocol briefing", "completed": false }
+    ],
+    "tags": ["Medication Safety", "NABH", "ICU", "High-Risk"],
+    "order": 1,
+    "sourceAlertId": "alt-3"
+  },
+  {
+    "_id": "capa-2",
+    "title": "Emergency Fast-Track Triage Desk for Peak Surge Hours",
+    "description": "Average door-to-doctor waiting time reached 52.0 mins due to intake bottleneck during shift transitions.",
+    "department": "Emergency",
+    "priority": "HIGH",
+    "stage": "IN_PROGRESS",
+    "standardCode": "JCI-COP-02.1",
+    "standardBody": "JCI",
+    "assignee": {
+      "name": "James Martinez",
+      "role": "Quality Manager",
+      "avatar": "JM"
+    },
+    "dueDate": "2026-10-05T00:00:00.000Z",
+    "estimatedRiskReduction": 22.0,
+    "checklists": [
+      { "text": "Analyze 30-day hourly arrival distribution", "completed": true },
+      { "text": "Reassign 2 triage nurses from general ward between 16:00-21:00", "completed": true },
+      { "text": "Install live digital queue display in ED lobby", "completed": false }
+    ],
+    "tags": ["Waiting Time", "Triage", "Emergency", "JCI"],
+    "order": 2,
+    "sourceAlertId": "alt-2"
+  },
+  {
+    "_id": "capa-3",
+    "title": "Central Line-Associated Bloodstream Infection (CLABSI) Bundle Audit",
+    "description": "ICU infection rates spiked to 3.8 per 1,000 device days. Strict adherence to CDC NHSN insertion checklists required.",
+    "department": "ICU",
+    "priority": "CRITICAL",
+    "stage": "IN_PROGRESS",
+    "standardCode": "CDC-NHSN-04",
+    "standardBody": "CDC",
+    "assignee": {
+      "name": "Dr. Sarah Jenkins",
+      "role": "Accreditation Officer",
+      "avatar": "SJ"
+    },
+    "dueDate": "2026-10-03T00:00:00.000Z",
+    "estimatedRiskReduction": 31.0,
+    "checklists": [
+      { "text": "Inspect sterile dressing supplies in all ICU carts", "completed": true },
+      { "text": "Audit 20 consecutive catheter insertion logs", "completed": true },
+      { "text": "Implement daily chlorhexidine skin prep compliance logs", "completed": false }
+    ],
+    "tags": ["Infection Control", "CDC", "CLABSI", "Patient Safety"],
+    "order": 3,
+    "sourceAlertId": "alt-1"
+  },
+  {
+    "_id": "capa-4",
+    "title": "Surgical Time-Out & Site Marking Verification",
+    "description": "JCI Universal Protocol compliance audit for operating theatres: verify pre-operative pause before initial incision.",
+    "department": "Surgery",
+    "priority": "HIGH",
+    "stage": "UNDER_REVIEW",
+    "standardCode": "JCI-IPSG-04",
+    "standardBody": "JCI",
+    "assignee": {
+      "name": "Elena Rostova",
+      "role": "Clinical Auditor",
+      "avatar": "ER"
+    },
+    "dueDate": "2026-10-06T00:00:00.000Z",
+    "estimatedRiskReduction": 18.0,
+    "checklists": [
+      { "text": "Randomized video review of 15 surgical time-outs", "completed": true },
+      { "text": "Validate surgeon dual-signature on digital consent", "completed": true },
+      { "text": "Accreditation board spot inspection sign-off", "completed": false }
+    ],
+    "tags": ["Surgical Safety", "Time-Out", "JCI", "OR"],
+    "order": 4
+  },
+  {
+    "_id": "capa-5",
+    "title": "Emergency Defibrillator & Crash Cart Daily Checklist Automation",
+    "description": "Transition from manual paper logs to biometric NFC digital tags on all Code Blue crash carts.",
+    "department": "Cardiology",
+    "priority": "MODERATE",
+    "stage": "UNDER_REVIEW",
+    "standardCode": "NABH-ROM-03",
+    "standardBody": "NABH",
+    "assignee": {
+      "name": "James Martinez",
+      "role": "Quality Manager",
+      "avatar": "JM"
+    },
+    "dueDate": "2026-10-10T00:00:00.000Z",
+    "estimatedRiskReduction": 14.0,
+    "checklists": [
+      { "text": "Affix NFC checkpoint stickers to 8 crash carts", "completed": true },
+      { "text": "Nurse shift automated verification test", "completed": true },
+      { "text": "Submit verification log to Quality Council", "completed": false }
+    ],
+    "tags": ["Crash Cart", "Cardiology", "NABH", "Equipment"],
+    "order": 5
+  },
+  {
+    "_id": "capa-6",
+    "title": "Pediatric Critical Value Notification SLA (under 15 mins)",
+    "description": "Ensure laboratory panic values for neonates and pediatrics are phoned to attending physician within 15 minutes.",
+    "department": "Pediatrics",
+    "priority": "MODERATE",
+    "stage": "RESOLVED",
+    "standardCode": "TJC-MM-01",
+    "standardBody": "TJC",
+    "assignee": {
+      "name": "Elena Rostova",
+      "role": "Clinical Auditor",
+      "avatar": "ER"
+    },
+    "dueDate": "2026-09-28T00:00:00.000Z",
+    "estimatedRiskReduction": 16.5,
+    "checklists": [
+      { "text": "Automated SMS trigger in LIS for critical blood chemistry", "completed": true },
+      { "text": "Read-back protocol verification training for lab staff", "completed": true },
+      { "text": "30-day compliance achieved at 99.4%", "completed": true }
+    ],
+    "tags": ["Lab Safety", "Pediatrics", "Critical Values", "TJC"],
+    "order": 6,
+    "resolutionNotes": "Verified in September clinical quality review. Notification time reduced from 34m to 9.2m average."
+  },
+  {
+    "_id": "capa-7",
+    "title": "ICU Step-Down Turnover & Discharge Protocol",
+    "description": "Establish proactive 09:00 AM multi-disciplinary discharge huddles to relieve ICU bed gridlock at 94% occupancy.",
+    "department": "ICU",
+    "priority": "HIGH",
+    "stage": "RESOLVED",
+    "standardCode": "NABH-COP-06",
+    "standardBody": "NABH",
+    "assignee": {
+      "name": "Dr. Sarah Jenkins",
+      "role": "Accreditation Officer",
+      "avatar": "SJ"
+    },
+    "dueDate": "2026-09-25T00:00:00.000Z",
+    "estimatedRiskReduction": 25.0,
+    "checklists": [
+      { "text": "Standardize step-down transition readiness checklist", "completed": true },
+      { "text": "Designate secondary telemetry beds in Ward 4B", "completed": true },
+      { "text": "Track 14-day median transfer latency", "completed": true }
+    ],
+    "tags": ["ICU", "Discharge", "Occupancy", "NABH"],
+    "order": 7,
+    "resolutionNotes": "Bed turnover latency dropped by 48 minutes across 35 post-op admissions."
+  }
+]

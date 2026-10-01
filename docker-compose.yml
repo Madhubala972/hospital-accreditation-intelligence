@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: hospital_accreditation_db
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=hospital_accreditation
+
+  python-ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: hospital_ai_service
+    restart: always
+    ports:
+      - "5001:5001"
+    environment:
+      - PORT=5001
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: hospital_backend
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGO_URI=mongodb://mongodb:27017/hospital_accreditation
+      - PYTHON_AI_URL=http://python-ai-service:5001
+      - JWT_SECRET=super_secret_hospital_intelligence_jwt_key_2026
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    depends_on:
+      - mongodb
+      - python-ai-service
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: hospital_frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000/api
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:

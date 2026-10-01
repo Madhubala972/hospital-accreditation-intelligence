@@ -1,0 +1,25 @@
+{
+  "publicRegistries": [
+    {
+      "id": "cms-hospital-compare",
+      "name": "Centers for Medicare & Medicaid Services (CMS) Hospital Compare API",
+      "url": "https://data.cms.gov/provider-data/api/1/metastore/schemas/dataset/items",
+      "frequency": "Monthly",
+      "metrics": ["Triage Time", "Readmission Rate", "Mortality Rate"]
+    },
+    {
+      "id": "cdc-nhsn",
+      "name": "CDC National Healthcare Safety Network (NHSN) Benchmark Feed",
+      "url": "https://data.cdc.gov/api/views/65ke-qfa7/rows.json",
+      "frequency": "Weekly",
+      "metrics": ["CAUTI", "CLABSI", "MRSA", "SSI"]
+    },
+    {
+      "id": "nabh-quality-indicators",
+      "name": "NABH Quality Assessment Registry",
+      "url": "https://api.nabh.co/v1/quality-benchmarks",
+      "frequency": "Quarterly",
+      "metrics": ["Pathway Conformance", "Staffing Ratios", "Medication Reconciliation"]
+    }
+  ]
+}
