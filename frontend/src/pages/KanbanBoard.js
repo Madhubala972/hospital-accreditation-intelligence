@@ -9,7 +9,6 @@ import {
   Clock,
   CheckCircle2,
   Calendar,
-  User,
   ShieldCheck,
   Trash2,
   Edit3,
@@ -17,15 +16,13 @@ import {
   ArrowLeft,
   RefreshCw,
   Printer,
-  ChevronRight,
   CheckSquare,
   Square,
   Layers,
-  Activity,
   Award,
   Zap,
-  Tag,
   X,
+  SlidersHorizontal,
 } from 'lucide-react';
 import {
   fetchCapaTasks,
@@ -40,77 +37,72 @@ import {
 const COLUMNS = [
   {
     id: 'BACKLOG',
-    title: 'Audit Findings & Backlog',
+    title: 'Audit Backlog',
     subtitle: 'Identified gaps & non-conformances',
-    color: 'border-slate-700/80',
-    headerBg: 'bg-slate-800/60',
-    badgeColor: 'bg-slate-700/80 text-slate-300',
-    dotColor: 'bg-slate-400',
+    border: 'border-slate-800',
+    headerBg: 'bg-slate-900/90',
+    badge: 'bg-slate-800 text-slate-300 border-slate-700',
+    dot: 'bg-slate-400',
   },
   {
     id: 'IN_PROGRESS',
     title: 'In Remediation',
-    subtitle: 'Active clinical & operational fixes',
-    color: 'border-amber-500/40',
+    subtitle: 'Active clinical & staff fixes',
+    border: 'border-amber-500/30',
     headerBg: 'bg-amber-950/20',
-    badgeColor: 'bg-amber-500/20 text-amber-300 border border-amber-500/30',
-    dotColor: 'bg-amber-400 animate-pulse',
+    badge: 'bg-amber-500/10 text-amber-300 border-amber-500/30',
+    dot: 'bg-amber-400 animate-pulse',
   },
   {
     id: 'UNDER_REVIEW',
     title: 'Under Audit Review',
-    subtitle: 'Accreditation verification & DFG check',
-    color: 'border-cyan-500/40',
+    subtitle: 'Officer validation & DFG check',
+    border: 'border-cyan-500/30',
     headerBg: 'bg-cyan-950/20',
-    badgeColor: 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30',
-    dotColor: 'bg-cyan-400',
+    badge: 'bg-cyan-500/10 text-cyan-300 border-cyan-500/30',
+    dot: 'bg-cyan-400',
   },
   {
     id: 'RESOLVED',
-    title: 'Compliant & Verified',
-    subtitle: 'Closed CAPAs with audit proof',
-    color: 'border-emerald-500/40',
+    title: 'Compliant & Closed',
+    subtitle: 'Verified closed with audit trail',
+    border: 'border-emerald-500/30',
     headerBg: 'bg-emerald-950/20',
-    badgeColor: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
-    dotColor: 'bg-emerald-400',
+    badge: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30',
+    dot: 'bg-emerald-400',
   },
 ];
 
-const PRIORITY_STYLES = {
+const PRIORITY_THEMES = {
   CRITICAL: {
-    badge: 'bg-rose-500/20 text-rose-300 border border-rose-500/40',
-    indicator: 'bg-rose-500',
-    label: 'Critical',
+    badge: 'bg-rose-500/10 text-rose-300 border border-rose-500/30',
+    label: 'Critical Priority',
   },
   HIGH: {
-    badge: 'bg-amber-500/20 text-amber-300 border border-amber-500/40',
-    indicator: 'bg-amber-500',
-    label: 'High',
+    badge: 'bg-amber-500/10 text-amber-300 border border-amber-500/30',
+    label: 'High Priority',
   },
   MODERATE: {
-    badge: 'bg-blue-500/20 text-blue-300 border border-blue-500/40',
-    indicator: 'bg-blue-500',
+    badge: 'bg-blue-500/10 text-blue-300 border border-blue-500/30',
     label: 'Moderate',
   },
   LOW: {
-    badge: 'bg-slate-500/20 text-slate-300 border border-slate-500/40',
-    indicator: 'bg-slate-400',
+    badge: 'bg-slate-500/10 text-slate-300 border border-slate-700',
     label: 'Low',
   },
 };
 
-const STANDARD_COLORS = {
-  NABH: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30',
-  JCI: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
-  TJC: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
-  CDC: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-  CMS: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
-  GENERAL: 'bg-slate-500/20 text-slate-300 border-slate-500/30',
+const STANDARD_BADGES = {
+  NABH: 'bg-indigo-500/10 text-indigo-300 border border-indigo-500/30',
+  JCI: 'bg-cyan-500/10 text-cyan-300 border border-cyan-500/30',
+  TJC: 'bg-purple-500/10 text-purple-300 border border-purple-500/30',
+  CDC: 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30',
+  CMS: 'bg-blue-500/10 text-blue-300 border border-blue-500/30',
+  GENERAL: 'bg-slate-800 text-slate-300 border border-slate-700',
 };
 
 const KanbanBoard = ({ selectedDepartment = 'All' }) => {
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [isSyncing, setIsSyncing] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
 
@@ -121,7 +113,7 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState('kanban'); // 'kanban' | 'list'
 
-  // Drag & Drop state
+  // Drag & Drop
   const [draggedTaskId, setDraggedTaskId] = useState(null);
   const [dragOverColumn, setDragOverColumn] = useState(null);
 
@@ -144,19 +136,16 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
       { text: 'Review EHR compliance audit logs', completed: false },
       { text: 'Implement staff corrective training protocol', completed: false },
     ],
-    tags: 'Accreditation, Clinical Safety',
+    tags: 'Accreditation, Patient Safety',
   });
 
-  // Sync selectedDepartment prop if changed externally from Navbar
   useEffect(() => {
     if (selectedDepartment) {
       setDeptFilter(selectedDepartment);
     }
   }, [selectedDepartment]);
 
-  // Load tasks
   const loadTasks = async () => {
-    setLoading(true);
     try {
       const data = await fetchCapaTasks({
         department: deptFilter,
@@ -167,8 +156,6 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
       setTasks(data.tasks || []);
     } catch (err) {
       console.error('Failed to load tasks:', err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -178,10 +165,10 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
 
   const showToast = (msg) => {
     setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 3500);
+    setTimeout(() => setToastMessage(null), 3000);
   };
 
-  // Metrics computation
+  // Metrics
   const metrics = useMemo(() => {
     const total = tasks.length;
     const critical = tasks.filter((t) => t.priority === 'CRITICAL' && t.stage !== 'RESOLVED').length;
@@ -206,7 +193,7 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
     };
   }, [tasks]);
 
-  // Drag & Drop Handlers
+  // Drag & Drop
   const handleDragStart = (e, taskId) => {
     setDraggedTaskId(taskId);
     e.dataTransfer.setData('text/plain', taskId);
@@ -216,15 +203,11 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
   const handleDragOver = (e, columnId) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
-    if (dragOverColumn !== columnId) {
-      setDragOverColumn(columnId);
-    }
+    if (dragOverColumn !== columnId) setDragOverColumn(columnId);
   };
 
   const handleDragLeave = (e, columnId) => {
-    if (dragOverColumn === columnId) {
-      setDragOverColumn(null);
-    }
+    if (dragOverColumn === columnId) setDragOverColumn(null);
   };
 
   const handleDrop = async (e, targetColumnId) => {
@@ -233,17 +216,14 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
     const taskId = e.dataTransfer.getData('text/plain') || draggedTaskId;
     if (!taskId) return;
 
-    // Fast optimistic UI update
     setTasks((prev) =>
       prev.map((t) => (t._id === taskId || t.id === taskId ? { ...t, stage: targetColumnId } : t))
     );
 
-    // Call background service
     await updateTaskStage(taskId, targetColumnId);
     setDraggedTaskId(null);
   };
 
-  // Quick move button handlers
   const handleMoveStage = async (taskId, currentStage, direction) => {
     const stageOrder = ['BACKLOG', 'IN_PROGRESS', 'UNDER_REVIEW', 'RESOLVED'];
     const currentIndex = stageOrder.indexOf(currentStage);
@@ -251,7 +231,6 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
 
     if (targetIndex >= 0 && targetIndex < stageOrder.length) {
       const nextStage = stageOrder[targetIndex];
-      // Optimistic update
       setTasks((prev) =>
         prev.map((t) => (t._id === taskId || t.id === taskId ? { ...t, stage: nextStage } : t))
       );
@@ -259,19 +238,18 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
     }
   };
 
-  // Toggle checklist
   const handleToggleChecklist = async (taskId, itemIndex) => {
     setTasks((prev) =>
       prev.map((t) => {
         if (t._id === taskId || t.id === taskId) {
-          const updatedChecklists = [...(t.checklists || [])];
-          if (updatedChecklists[itemIndex]) {
-            updatedChecklists[itemIndex] = {
-              ...updatedChecklists[itemIndex],
-              completed: !updatedChecklists[itemIndex].completed,
+          const updated = [...(t.checklists || [])];
+          if (updated[itemIndex]) {
+            updated[itemIndex] = {
+              ...updated[itemIndex],
+              completed: !updated[itemIndex].completed,
             };
           }
-          return { ...t, checklists: updatedChecklists };
+          return { ...t, checklists: updated };
         }
         return t;
       })
@@ -279,30 +257,27 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
     await toggleChecklistItem(taskId, itemIndex);
   };
 
-  // Delete Task
   const handleDeleteTask = async (taskId) => {
-    if (window.confirm('Are you sure you want to delete this CAPA remediation action?')) {
+    if (window.confirm('Delete this remediation action?')) {
       setTasks((prev) => prev.filter((t) => t._id !== taskId && t.id !== taskId));
       await deleteCapaTask(taskId);
-      showToast('CAPA task removed.');
+      showToast('Action item removed.');
     }
   };
 
-  // Sync from AI Alerts
   const handleSyncAlerts = async () => {
     setIsSyncing(true);
     try {
       const res = await syncAlertsToKanban();
       await loadTasks();
-      showToast(res.message || 'Successfully synced active telemetry alerts to Kanban backlog!');
+      showToast(res.message || 'Synced active alerts to Kanban backlog.');
     } catch (err) {
-      showToast('Alert sync complete.');
+      showToast('Sync complete.');
     } finally {
       setIsSyncing(false);
     }
   };
 
-  // Modal Open
   const openCreateModal = () => {
     setEditingTask(null);
     setFormData({
@@ -348,7 +323,6 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
     setIsModalOpen(true);
   };
 
-  // Submit Modal Form
   const handleSubmitForm = async (e) => {
     e.preventDefault();
     if (!formData.title.trim()) return;
@@ -388,17 +362,16 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
         prev.map((t) => (t._id === taskId || t.id === taskId ? { ...t, ...taskPayload } : t))
       );
       await updateCapaTask(taskId, taskPayload);
-      showToast('CAPA action item updated.');
+      showToast('Action item updated.');
     } else {
       const created = await createCapaTask(taskPayload);
       setTasks((prev) => [created, ...prev]);
-      showToast('New CAPA action item added to board.');
+      showToast('New action item added to board.');
     }
 
     setIsModalOpen(false);
   };
 
-  // Add checklist row in modal
   const addChecklistRow = () => {
     setFormData((prev) => ({
       ...prev,
@@ -422,176 +395,164 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
   };
 
   return (
-    <div className="p-6 max-w-[1600px] mx-auto space-y-6 text-slate-100 font-sans">
-      {/* Toast notification */}
+    <div className="p-8 max-w-7xl mx-auto space-y-8 text-slate-100 font-sans">
+      {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-cyan-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3 border border-cyan-400/40 animate-fade-in">
-          <Sparkles className="w-5 h-5 text-yellow-300 animate-spin" />
+        <div className="fixed bottom-6 right-6 z-50 bg-cyan-600 text-white px-6 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 border border-cyan-400/40 animate-fade-in">
+          <Sparkles className="w-5 h-5 text-yellow-300" />
           <span className="text-sm font-semibold">{toastMessage}</span>
         </div>
       )}
 
-      {/* Page Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 border-b border-slate-800 pb-5">
+      {/* Top Header */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <div className="flex items-center space-x-3">
-            <div className="p-2.5 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-500/20">
+            <div className="p-3 rounded-2xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
               <KanbanIcon className="w-6 h-6" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-                Accreditation CAPA & Remediation Kanban
-                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                  Live Surveillance
-                </span>
+              <h1 className="text-2xl font-bold text-white tracking-tight">
+                Accreditation Action Board (CAPA)
               </h1>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Manage Corrective and Preventive Actions (CAPA), audit non-conformances, and protocol remediations across all clinical departments.
+              <p className="text-sm text-slate-400 mt-1">
+                Track hospital safety improvements, protocol fixes, and audit tasks simply and clearly.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center flex-wrap gap-2.5">
+        {/* Top Action Buttons */}
+        <div className="flex items-center space-x-3">
           <button
             onClick={handleSyncAlerts}
             disabled={isSyncing}
-            className="flex items-center space-x-2 px-3.5 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 border border-cyan-500/30 hover:border-cyan-500/60 text-cyan-300 text-xs font-semibold transition-all shadow-sm active:scale-95 disabled:opacity-50"
-            title="Automatically generate CAPA items from active AI process deviations and alerts"
+            className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-850 text-cyan-300 border border-cyan-500/30 text-xs font-semibold transition-all active:scale-95 disabled:opacity-50"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-yellow-400' : 'text-cyan-400'}`} />
-            <span>{isSyncing ? 'Syncing...' : 'Sync AI Audit Alerts'}</span>
+            <span>{isSyncing ? 'Syncing...' : 'Sync AI Alerts'}</span>
           </button>
 
           <button
             onClick={() => window.print()}
-            className="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-semibold transition-all"
-            title="Export/Print CAPA plan"
+            className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-850 text-slate-300 border border-slate-800 text-xs font-semibold transition-all"
           >
             <Printer className="w-3.5 h-3.5 text-slate-400" />
-            <span>Print Plan</span>
+            <span>Print</span>
           </button>
 
           <button
             onClick={openCreateModal}
-            className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs font-bold transition-all shadow-md shadow-cyan-500/25 active:scale-95"
+            className="flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold transition-all shadow-lg shadow-cyan-500/20 active:scale-95"
           >
-            <Plus className="w-4 h-4" />
-            <span>New CAPA Action</span>
+            <Plus className="w-4 h-4 stroke-[2.5]" />
+            <span>Add Action Item</span>
           </button>
         </div>
       </div>
 
-      {/* Metrics Summary Strip */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        <div className="bg-slate-900/80 border border-slate-800/90 rounded-xl p-3.5 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-slate-400 text-xs font-medium">
-            <span>Total CAPAs</span>
-            <Layers className="w-4 h-4 text-cyan-400" />
+      {/* Clean, Spacious 4-Card Summary Bar */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Total Tasks */}
+        <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Total Actions</p>
+            <p className="text-3xl font-bold text-white mt-1">{metrics.total}</p>
+            <p className="text-xs text-slate-500 mt-1">Across all departments</p>
           </div>
-          <div className="text-xl font-bold text-white mt-2">{metrics.total}</div>
-          <div className="text-[10px] text-slate-500 mt-0.5">Across all hospital units</div>
+          <div className="p-3.5 rounded-xl bg-slate-800/80 text-slate-300">
+            <Layers className="w-5 h-5" />
+          </div>
         </div>
 
-        <div className="bg-slate-900/80 border border-rose-900/30 rounded-xl p-3.5 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-rose-300 text-xs font-medium">
-            <span>Critical Deficits</span>
-            <AlertCircle className="w-4 h-4 text-rose-400" />
+        {/* In Remediation */}
+        <div className="bg-slate-900/60 border border-amber-500/20 rounded-2xl p-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium text-amber-300/80 uppercase tracking-wider">In Remediation</p>
+            <p className="text-3xl font-bold text-amber-300 mt-1">{metrics.inProgress}</p>
+            <p className="text-xs text-amber-400/60 mt-1">Active staff interventions</p>
           </div>
-          <div className="text-xl font-bold text-rose-300 mt-2">{metrics.critical}</div>
-          <div className="text-[10px] text-rose-400/70 mt-0.5">Immediate action required</div>
+          <div className="p-3.5 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+            <Clock className="w-5 h-5" />
+          </div>
         </div>
 
-        <div className="bg-slate-900/80 border border-amber-900/30 rounded-xl p-3.5 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-amber-300 text-xs font-medium">
-            <span>In Remediation</span>
-            <Clock className="w-4 h-4 text-amber-400" />
+        {/* Compliance Rate */}
+        <div className="bg-slate-900/60 border border-emerald-500/20 rounded-2xl p-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium text-emerald-300/80 uppercase tracking-wider">Compliance Rate</p>
+            <p className="text-3xl font-bold text-emerald-300 mt-1">{metrics.complianceRate}%</p>
+            <p className="text-xs text-emerald-400/60 mt-1">{metrics.resolved} verified completed</p>
           </div>
-          <div className="text-xl font-bold text-amber-300 mt-2">{metrics.inProgress}</div>
-          <div className="text-[10px] text-amber-400/70 mt-0.5">Active intervention</div>
+          <div className="p-3.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            <CheckCircle2 className="w-5 h-5" />
+          </div>
         </div>
 
-        <div className="bg-slate-900/80 border border-cyan-900/30 rounded-xl p-3.5 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-cyan-300 text-xs font-medium">
-            <span>Under Review</span>
-            <ShieldCheck className="w-4 h-4 text-cyan-400" />
+        {/* Risk Points Mitigated */}
+        <div className="bg-slate-900/60 border border-cyan-500/20 rounded-2xl p-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium text-cyan-300/80 uppercase tracking-wider">Risk Mitigated</p>
+            <p className="text-3xl font-bold text-cyan-300 mt-1">-{metrics.resolvedRiskReduction} <span className="text-sm font-normal text-cyan-400/60">pts</span></p>
+            <p className="text-xs text-cyan-400/60 mt-1">Total score reduction</p>
           </div>
-          <div className="text-xl font-bold text-cyan-300 mt-2">{metrics.underReview}</div>
-          <div className="text-[10px] text-cyan-400/70 mt-0.5">Accreditation sign-off</div>
-        </div>
-
-        <div className="bg-slate-900/80 border border-emerald-900/30 rounded-xl p-3.5 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-emerald-300 text-xs font-medium">
-            <span>Compliance Rate</span>
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+          <div className="p-3.5 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+            <Zap className="w-5 h-5" />
           </div>
-          <div className="text-xl font-bold text-emerald-300 mt-2">{metrics.complianceRate}%</div>
-          <div className="text-[10px] text-emerald-400/70 mt-0.5">{metrics.resolved} verified closed</div>
-        </div>
-
-        <div className="bg-slate-900/80 border border-indigo-900/30 rounded-xl p-3.5 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-indigo-300 text-xs font-medium">
-            <span>Risk Mitigated</span>
-            <Zap className="w-4 h-4 text-indigo-400" />
-          </div>
-          <div className="text-xl font-bold text-indigo-300 mt-2">-{metrics.resolvedRiskReduction} <span className="text-xs text-indigo-400/70">/ -{metrics.totalRiskReduction} pts</span></div>
-          <div className="text-[10px] text-indigo-400/70 mt-0.5">Composite risk reduction</div>
         </div>
       </div>
 
-      {/* Filter and Search Toolbar */}
-      <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-        {/* Search */}
-        <div className="relative flex-1 min-w-[240px]">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+      {/* Clean Filter and Search Toolbar */}
+      <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+        {/* Search Input */}
+        <div className="relative flex-1">
+          <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Search CAPAs by title, protocol, standard code (e.g. NABH-COP-01)..."
+            placeholder="Search action items by title, protocol, or standard (e.g. NABH-COP-01)..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-950/70 border border-slate-800 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500"
+            className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="w-4 h-4" />
             </button>
           )}
         </div>
 
-        {/* Filter Dropdowns */}
-        <div className="flex items-center flex-wrap gap-2.5">
+        {/* Filters */}
+        <div className="flex items-center flex-wrap gap-3">
           {/* Department Filter */}
-          <div className="flex items-center space-x-1.5 bg-slate-950/60 border border-slate-800 px-2.5 py-1.5 rounded-xl text-xs">
-            <Filter className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-slate-400 text-[11px]">Dept:</span>
+          <div className="flex items-center space-x-2 bg-slate-950 border border-slate-800 px-3 py-2 rounded-xl text-xs">
+            <span className="text-slate-400">Department:</span>
             <select
               value={deptFilter}
               onChange={(e) => setDeptFilter(e.target.value)}
-              className="bg-transparent text-slate-200 font-semibold focus:outline-none text-xs cursor-pointer"
+              className="bg-transparent text-slate-200 font-semibold focus:outline-none cursor-pointer"
             >
-              <option value="All" className="bg-slate-900 text-slate-200">All Units</option>
-              <option value="ICU" className="bg-slate-900 text-slate-200">ICU</option>
-              <option value="Emergency" className="bg-slate-900 text-slate-200">Emergency</option>
-              <option value="Cardiology" className="bg-slate-900 text-slate-200">Cardiology</option>
-              <option value="Surgery" className="bg-slate-900 text-slate-200">Surgery</option>
-              <option value="Pediatrics" className="bg-slate-900 text-slate-200">Pediatrics</option>
-              <option value="General" className="bg-slate-900 text-slate-200">General Ward</option>
+              <option value="All" className="bg-slate-900">All Units</option>
+              <option value="ICU" className="bg-slate-900">ICU</option>
+              <option value="Emergency" className="bg-slate-900">Emergency</option>
+              <option value="Cardiology" className="bg-slate-900">Cardiology</option>
+              <option value="Surgery" className="bg-slate-900">Surgery</option>
+              <option value="Pediatrics" className="bg-slate-900">Pediatrics</option>
+              <option value="General" className="bg-slate-900">General Ward</option>
             </select>
           </div>
 
           {/* Priority Filter */}
-          <div className="flex items-center space-x-1.5 bg-slate-950/60 border border-slate-800 px-2.5 py-1.5 rounded-xl text-xs">
-            <span className="text-slate-400 text-[11px]">Priority:</span>
+          <div className="flex items-center space-x-2 bg-slate-950 border border-slate-800 px-3 py-2 rounded-xl text-xs">
+            <span className="text-slate-400">Priority:</span>
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value)}
-              className="bg-transparent text-slate-200 font-semibold focus:outline-none text-xs cursor-pointer"
+              className="bg-transparent text-slate-200 font-semibold focus:outline-none cursor-pointer"
             >
-              <option value="All" className="bg-slate-900 text-slate-200">All Priorities</option>
+              <option value="All" className="bg-slate-900">All Priorities</option>
               <option value="CRITICAL" className="bg-slate-900 text-rose-400">Critical</option>
               <option value="HIGH" className="bg-slate-900 text-amber-400">High</option>
               <option value="MODERATE" className="bg-slate-900 text-blue-400">Moderate</option>
@@ -599,52 +560,35 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
             </select>
           </div>
 
-          {/* Standard Filter */}
-          <div className="flex items-center space-x-1.5 bg-slate-950/60 border border-slate-800 px-2.5 py-1.5 rounded-xl text-xs">
-            <Award className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-slate-400 text-[11px]">Standard:</span>
-            <select
-              value={standardFilter}
-              onChange={(e) => setStandardFilter(e.target.value)}
-              className="bg-transparent text-slate-200 font-semibold focus:outline-none text-xs cursor-pointer"
-            >
-              <option value="All" className="bg-slate-900 text-slate-200">All Standards</option>
-              <option value="NABH" className="bg-slate-900 text-indigo-300">NABH</option>
-              <option value="JCI" className="bg-slate-900 text-cyan-300">JCI</option>
-              <option value="TJC" className="bg-slate-900 text-purple-300">TJC</option>
-              <option value="CDC" className="bg-slate-900 text-emerald-300">CDC / NHSN</option>
-            </select>
-          </div>
-
-          {/* View Mode Toggle */}
-          <div className="flex items-center bg-slate-950/80 border border-slate-800 rounded-xl p-0.5">
+          {/* View Toggle */}
+          <div className="flex items-center bg-slate-950 border border-slate-800 rounded-xl p-1">
             <button
               onClick={() => setViewMode('kanban')}
-              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 viewMode === 'kanban'
                   ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              Board
+              Board View
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 viewMode === 'list'
                   ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              Table
+              Table View
             </button>
           </div>
         </div>
       </div>
 
-      {/* Main Kanban Board View */}
+      {/* Main 4-Column Kanban Board */}
       {viewMode === 'kanban' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 items-start">
           {COLUMNS.map((column) => {
             const columnTasks = tasks.filter((t) => t.stage === column.id);
             const isTarget = dragOverColumn === column.id;
@@ -655,105 +599,101 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
                 onDragOver={(e) => handleDragOver(e, column.id)}
                 onDragLeave={(e) => handleDragLeave(e, column.id)}
                 onDrop={(e) => handleDrop(e, column.id)}
-                className={`flex flex-col rounded-2xl bg-slate-900/60 border ${
-                  isTarget ? 'border-cyan-400 ring-2 ring-cyan-500/40 bg-slate-850/80' : column.color
-                } transition-all duration-150 min-h-[550px] shadow-lg`}
+                className={`flex flex-col rounded-3xl bg-slate-900/40 border ${
+                  isTarget ? 'border-cyan-400 ring-4 ring-cyan-500/20 bg-slate-900/80' : column.border
+                } transition-all duration-150 min-h-[600px] shadow-sm`}
               >
                 {/* Column Header */}
-                <div className={`p-3.5 rounded-t-2xl border-b border-slate-800/80 ${column.headerBg} flex items-center justify-between`}>
-                  <div className="flex items-center space-x-2.5">
-                    <div className={`w-2.5 h-2.5 rounded-full ${column.dotColor}`} />
+                <div className={`p-5 rounded-t-3xl border-b border-slate-800/80 ${column.headerBg} flex items-center justify-between`}>
+                  <div className="flex items-center space-x-3">
+                    <div className={`w-3 h-3 rounded-full ${column.dot}`} />
                     <div>
-                      <h2 className="text-xs font-bold text-white tracking-wide uppercase">{column.title}</h2>
-                      <p className="text-[10px] text-slate-400">{column.subtitle}</p>
+                      <h2 className="text-sm font-bold text-white tracking-wide">{column.title}</h2>
+                      <p className="text-xs text-slate-400 mt-0.5">{column.subtitle}</p>
                     </div>
                   </div>
-                  <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${column.badgeColor}`}>
+                  <span className={`px-2.5 py-1 rounded-full text-xs font-bold border ${column.badge}`}>
                     {columnTasks.length}
                   </span>
                 </div>
 
-                {/* Column Cards Drop Area */}
-                <div className="p-3 flex-1 flex flex-col space-y-3 overflow-y-auto max-h-[calc(100vh-280px)]">
+                {/* Cards Container */}
+                <div className="p-4 flex-1 flex flex-col space-y-4 overflow-y-auto">
                   {columnTasks.length === 0 ? (
-                    <div className="flex-1 flex flex-col items-center justify-center py-12 text-center border-2 border-dashed border-slate-800/60 rounded-xl m-1">
-                      <ShieldCheck className="w-8 h-8 text-slate-700 mb-2 stroke-1" />
-                      <p className="text-xs text-slate-500 font-medium">No actions in this stage</p>
-                      <p className="text-[10px] text-slate-600 mt-0.5">Drag tasks here or create new</p>
+                    <div className="flex-1 flex flex-col items-center justify-center py-16 text-center border-2 border-dashed border-slate-800/60 rounded-2xl m-2">
+                      <ShieldCheck className="w-10 h-10 text-slate-700 mb-2 stroke-1" />
+                      <p className="text-sm text-slate-500 font-medium">No actions here</p>
+                      <p className="text-xs text-slate-600 mt-1">Drag an item here to update stage</p>
                     </div>
                   ) : (
                     columnTasks.map((task) => {
                       const taskId = task._id || task.id;
-                      const priorityInfo = PRIORITY_STYLES[task.priority] || PRIORITY_STYLES.MODERATE;
-                      const standardTagColor = STANDARD_COLORS[task.standardBody] || STANDARD_COLORS.GENERAL;
+                      const priorityTheme = PRIORITY_THEMES[task.priority] || PRIORITY_THEMES.MODERATE;
+                      const standardBadge = STANDARD_BADGES[task.standardBody] || STANDARD_BADGES.GENERAL;
                       const totalChecklist = task.checklists?.length || 0;
                       const completedChecklist = task.checklists?.filter((c) => c.completed).length || 0;
-                      const isOverdue =
-                        task.dueDate &&
-                        task.stage !== 'RESOLVED' &&
-                        new Date(task.dueDate) < new Date();
 
                       return (
                         <div
                           key={taskId}
                           draggable
                           onDragStart={(e) => handleDragStart(e, taskId)}
-                          className={`bg-slate-950/80 hover:bg-slate-950 border border-slate-800/90 hover:border-slate-700 rounded-xl p-3.5 shadow-md transition-all cursor-grab active:cursor-grabbing hover:shadow-cyan-900/10 ${
-                            draggedTaskId === taskId ? 'opacity-40 scale-98' : ''
+                          className={`bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-2xl p-5 shadow-sm transition-all cursor-grab active:cursor-grabbing hover:shadow-md ${
+                            draggedTaskId === taskId ? 'opacity-40 scale-95' : ''
                           }`}
                         >
                           {/* Top Badges */}
-                          <div className="flex items-center justify-between gap-1.5 mb-2">
-                            <div className="flex items-center space-x-1.5 flex-wrap gap-y-1">
-                              {/* Priority */}
-                              <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold ${priorityInfo.badge}`}>
-                                {priorityInfo.label}
+                          <div className="flex items-center justify-between gap-2 mb-3">
+                            <div className="flex items-center space-x-2 flex-wrap gap-y-1.5">
+                              {/* Priority Badge */}
+                              <span className={`px-2.5 py-1 rounded-lg text-xs font-bold ${priorityTheme.badge}`}>
+                                {priorityTheme.label}
                               </span>
 
                               {/* Department */}
-                              <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">
+                              <span className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-300 border border-slate-700">
                                 {task.department}
                               </span>
 
                               {/* Standard Code */}
                               {task.standardCode && (
-                                <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold border ${standardTagColor}`}>
+                                <span className={`px-2.5 py-1 rounded-lg text-xs font-bold ${standardBadge}`}>
                                   {task.standardCode}
                                 </span>
                               )}
                             </div>
 
-                            {/* Estimated Risk Reduction */}
+                            {/* Risk Reduction Badge */}
                             {task.estimatedRiskReduction && (
-                              <span className="text-[11px] font-bold text-emerald-400 bg-emerald-950/40 px-1.5 py-0.5 rounded border border-emerald-800/40 flex items-center gap-0.5 shrink-0" title="Projected composite risk score reduction upon completion">
-                                <Zap className="w-2.5 h-2.5" />
-                                -{task.estimatedRiskReduction}
+                              <span className="text-xs font-bold text-emerald-400 bg-emerald-950/40 px-2 py-1 rounded-lg border border-emerald-800/40 flex items-center gap-1 shrink-0">
+                                <Zap className="w-3 h-3" />
+                                -{task.estimatedRiskReduction} pts
                               </span>
                             )}
                           </div>
 
-                          {/* Task Title */}
-                          <h3 className="text-xs font-bold text-white leading-snug hover:text-cyan-300 transition-colors">
+                          {/* Title */}
+                          <h3 className="text-sm font-bold text-white leading-snug hover:text-cyan-300 transition-colors">
                             {task.title}
                           </h3>
 
                           {/* Description */}
                           {task.description && (
-                            <p className="text-[11px] text-slate-400 mt-1.5 line-clamp-2 leading-relaxed">
+                            <p className="text-xs text-slate-400 mt-2 line-clamp-2 leading-relaxed">
                               {task.description}
                             </p>
                           )}
 
                           {/* Checklists */}
                           {totalChecklist > 0 && (
-                            <div className="mt-3 pt-2.5 border-t border-slate-850 space-y-1.5">
-                              <div className="flex items-center justify-between text-[10px] font-semibold text-slate-400 mb-1">
-                                <span className="flex items-center gap-1">
-                                  <CheckSquare className="w-3 h-3 text-cyan-400" />
-                                  Protocol Checkpoints
+                            <div className="mt-4 pt-3 border-t border-slate-800 space-y-2">
+                              <div className="flex items-center justify-between text-xs font-semibold text-slate-400 mb-1">
+                                <span className="flex items-center gap-1.5">
+                                  <CheckSquare className="w-3.5 h-3.5 text-cyan-400" />
+                                  Checkpoints
                                 </span>
                                 <span>
-                                  {completedChecklist}/{totalChecklist} ({Math.round((completedChecklist / totalChecklist) * 100)}%)
+                                  {completedChecklist}/{totalChecklist}
                                 </span>
                               </div>
 
@@ -768,25 +708,25 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
                               </div>
 
                               {/* Checklist item toggles */}
-                              <div className="space-y-1">
+                              <div className="space-y-1.5">
                                 {task.checklists.map((chk, cIdx) => (
                                   <div
                                     key={cIdx}
                                     onClick={() => handleToggleChecklist(taskId, cIdx)}
-                                    className="flex items-start space-x-2 text-[11px] cursor-pointer group py-0.5"
+                                    className="flex items-start space-x-2.5 text-xs cursor-pointer group py-0.5"
                                   >
                                     <button
                                       type="button"
                                       className="mt-0.5 text-slate-500 group-hover:text-cyan-400 shrink-0"
                                     >
                                       {chk.completed ? (
-                                        <CheckSquare className="w-3.5 h-3.5 text-emerald-400" />
+                                        <CheckSquare className="w-4 h-4 text-emerald-400" />
                                       ) : (
-                                        <Square className="w-3.5 h-3.5 text-slate-600" />
+                                        <Square className="w-4 h-4 text-slate-600" />
                                       )}
                                     </button>
                                     <span
-                                      className={`leading-tight ${
+                                      className={`leading-relaxed ${
                                         chk.completed
                                           ? 'line-through text-slate-500'
                                           : 'text-slate-300 group-hover:text-white'
@@ -800,71 +740,62 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
                             </div>
                           )}
 
-                          {/* Footer: Assignee & Date & Fast Actions */}
-                          <div className="mt-3.5 pt-2.5 border-t border-slate-850 flex items-center justify-between text-[11px] text-slate-400">
-                            {/* Assignee Avatar */}
-                            <div className="flex items-center space-x-1.5">
-                              <div className="w-5 h-5 rounded-full bg-cyan-900/60 text-cyan-300 border border-cyan-700/50 flex items-center justify-center font-bold text-[9px]">
+                          {/* Footer */}
+                          <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                            {/* Assignee */}
+                            <div className="flex items-center space-x-2">
+                              <div className="w-6 h-6 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-800/50 flex items-center justify-center font-bold text-[10px]">
                                 {task.assignee?.avatar || 'SJ'}
                               </div>
-                              <span className="truncate max-w-[90px] text-[10px] text-slate-300 font-medium">
+                              <span className="text-xs text-slate-300 font-medium truncate max-w-[100px]">
                                 {task.assignee?.name?.split(' ')[0] || 'Officer'}
                               </span>
                             </div>
 
-                            {/* Due date */}
+                            {/* Due Date */}
                             {task.dueDate && (
-                              <div
-                                className={`flex items-center space-x-1 text-[10px] ${
-                                  isOverdue ? 'text-rose-400 font-bold' : 'text-slate-400'
-                                }`}
-                                title={isOverdue ? 'Action item overdue!' : 'Target completion date'}
-                              >
-                                <Calendar className="w-3 h-3 shrink-0" />
+                              <div className="flex items-center space-x-1 text-xs text-slate-400">
+                                <Calendar className="w-3.5 h-3.5 text-slate-500" />
                                 <span>{new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                               </div>
                             )}
 
-                            {/* Quick Controls */}
-                            <div className="flex items-center space-x-1">
-                              {/* Move Left */}
+                            {/* Move and Edit Buttons */}
+                            <div className="flex items-center space-x-1.5">
                               {column.id !== 'BACKLOG' && (
                                 <button
                                   onClick={() => handleMoveStage(taskId, task.stage, 'prev')}
                                   title="Move to previous stage"
-                                  className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-cyan-300"
+                                  className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-cyan-300 transition-colors"
                                 >
-                                  <ArrowLeft className="w-3 h-3" />
+                                  <ArrowLeft className="w-3.5 h-3.5" />
                                 </button>
                               )}
 
-                              {/* Move Right */}
                               {column.id !== 'RESOLVED' && (
                                 <button
                                   onClick={() => handleMoveStage(taskId, task.stage, 'next')}
                                   title="Advance to next stage"
-                                  className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-cyan-300"
+                                  className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-cyan-300 transition-colors"
                                 >
-                                  <ArrowRight className="w-3 h-3" />
+                                  <ArrowRight className="w-3.5 h-3.5" />
                                 </button>
                               )}
 
-                              {/* Edit */}
                               <button
                                 onClick={() => openEditModal(task)}
-                                title="Edit Task"
-                                className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-amber-300"
+                                title="Edit"
+                                className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-amber-300 transition-colors"
                               >
-                                <Edit3 className="w-3 h-3" />
+                                <Edit3 className="w-3.5 h-3.5" />
                               </button>
 
-                              {/* Delete */}
                               <button
                                 onClick={() => handleDeleteTask(taskId)}
-                                title="Delete Task"
-                                className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-rose-400"
+                                title="Delete"
+                                className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-rose-400 transition-colors"
                               >
-                                <Trash2 className="w-3 h-3" />
+                                <Trash2 className="w-3.5 h-3.5" />
                               </button>
                             </div>
                           </div>
@@ -878,174 +809,122 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
           })}
         </div>
       ) : (
-        /* Detailed List / Table View */
-        <div className="bg-slate-900/90 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+        /* Detailed Table View */
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-md">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-800/80 text-slate-400 uppercase font-bold text-[10px] tracking-wider border-b border-slate-700">
+              <thead className="bg-slate-800/80 text-slate-400 uppercase font-bold text-[11px] tracking-wider border-b border-slate-700">
                 <tr>
-                  <th className="px-4 py-3.5">Action Item / CAPA Title</th>
-                  <th className="px-4 py-3.5">Department</th>
-                  <th className="px-4 py-3.5">Priority</th>
-                  <th className="px-4 py-3.5">Standard Ref</th>
-                  <th className="px-4 py-3.5">Workflow Stage</th>
-                  <th className="px-4 py-3.5">Risk Impact</th>
-                  <th className="px-4 py-3.5">Checkpoints</th>
-                  <th className="px-4 py-3.5">Assignee</th>
-                  <th className="px-4 py-3.5">Target Due</th>
-                  <th className="px-4 py-3.5 text-right">Actions</th>
+                  <th className="px-5 py-4">Action Item Title</th>
+                  <th className="px-5 py-4">Department</th>
+                  <th className="px-5 py-4">Priority</th>
+                  <th className="px-5 py-4">Standard Code</th>
+                  <th className="px-5 py-4">Stage</th>
+                  <th className="px-5 py-4">Risk Impact</th>
+                  <th className="px-5 py-4">Assignee</th>
+                  <th className="px-5 py-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 font-medium">
-                {tasks.length === 0 ? (
-                  <tr>
-                    <td colSpan="10" className="px-4 py-8 text-center text-slate-500">
-                      No CAPA action items found matching your filters.
-                    </td>
-                  </tr>
-                ) : (
-                  tasks.map((task) => {
-                    const taskId = task._id || task.id;
-                    const priorityInfo = PRIORITY_STYLES[task.priority] || PRIORITY_STYLES.MODERATE;
-                    const col = COLUMNS.find((c) => c.id === task.stage) || COLUMNS[0];
-                    const totalCheck = task.checklists?.length || 0;
-                    const compCheck = task.checklists?.filter((c) => c.completed).length || 0;
+              <tbody className="divide-y divide-slate-800">
+                {tasks.map((task) => {
+                  const taskId = task._id || task.id;
+                  const priorityTheme = PRIORITY_THEMES[task.priority] || PRIORITY_THEMES.MODERATE;
+                  const col = COLUMNS.find((c) => c.id === task.stage) || COLUMNS[0];
 
-                    return (
-                      <tr key={taskId} className="hover:bg-slate-850/60 transition-colors">
-                        <td className="px-4 py-3">
-                          <div className="font-bold text-white max-w-sm">{task.title}</div>
-                          {task.description && (
-                            <div className="text-[10px] text-slate-400 truncate max-w-sm mt-0.5">
-                              {task.description}
-                            </div>
-                          )}
-                        </td>
-                        <td className="px-4 py-3">
-                          <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 text-[10px] font-bold">
-                            {task.department}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${priorityInfo.badge}`}>
-                            {priorityInfo.label}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3">
-                          <span className="font-mono text-cyan-300 text-[11px] font-bold">
-                            {task.standardCode}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3">
-                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${col.badgeColor}`}>
-                            {col.title}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3">
-                          <span className="text-emerald-400 font-bold">-{task.estimatedRiskReduction} pts</span>
-                        </td>
-                        <td className="px-4 py-3">
-                          <div className="flex items-center space-x-1.5">
-                            <span className="text-[11px] text-slate-300">
-                              {compCheck}/{totalCheck}
-                            </span>
-                            <div className="w-16 h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-cyan-400"
-                                style={{ width: `${totalCheck > 0 ? (compCheck / totalCheck) * 100 : 0}%` }}
-                              />
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-4 py-3">
-                          <div className="text-[11px] text-slate-200 font-semibold">{task.assignee?.name}</div>
-                          <div className="text-[9px] text-slate-500">{task.assignee?.role}</div>
-                        </td>
-                        <td className="px-4 py-3 text-[11px] text-slate-400">
-                          {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : '—'}
-                        </td>
-                        <td className="px-4 py-3 text-right">
-                          <div className="flex items-center justify-end space-x-1">
-                            <button
-                              onClick={() => openEditModal(task)}
-                              className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-amber-300"
-                              title="Edit"
-                            >
-                              <Edit3 className="w-3.5 h-3.5" />
-                            </button>
-                            <button
-                              onClick={() => handleDeleteTask(taskId)}
-                              className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-rose-400"
-                              title="Delete"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })
-                )}
+                  return (
+                    <tr key={taskId} className="hover:bg-slate-850/60 transition-colors">
+                      <td className="px-5 py-3.5 font-bold text-white max-w-sm">
+                        {task.title}
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <span className="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 font-semibold">
+                          {task.department}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <span className={`px-2.5 py-1 rounded-lg font-bold ${priorityTheme.badge}`}>
+                          {priorityTheme.label}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3.5 font-mono text-cyan-300 font-bold">
+                        {task.standardCode}
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <span className={`px-3 py-1 rounded-full font-bold border ${col.badge}`}>
+                          {col.title}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3.5 text-emerald-400 font-bold">
+                        -{task.estimatedRiskReduction} pts
+                      </td>
+                      <td className="px-5 py-3.5 text-slate-200">
+                        {task.assignee?.name}
+                      </td>
+                      <td className="px-5 py-3.5 text-right">
+                        <div className="flex items-center justify-end space-x-2">
+                          <button
+                            onClick={() => openEditModal(task)}
+                            className="p-1.5 rounded hover:bg-slate-800 text-slate-400 hover:text-amber-300"
+                          >
+                            <Edit3 className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteTask(taskId)}
+                            className="p-1.5 rounded hover:bg-slate-800 text-slate-400 hover:text-rose-400"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         </div>
       )}
 
-      {/* Create / Edit Task Modal */}
+      {/* Clean Create / Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 overflow-y-auto animate-fade-in">
-          <div className="bg-slate-900 border border-slate-700/80 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl my-8">
-            {/* Modal Header */}
-            <div className="bg-slate-800/80 px-6 py-4 border-b border-slate-700 flex items-center justify-between">
-              <div className="flex items-center space-x-2.5">
-                <div className="p-2 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                  <KanbanIcon className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="text-base font-bold text-white">
-                    {editingTask ? 'Edit Accreditation CAPA Action' : 'Create New CAPA Action Item'}
-                  </h3>
-                  <p className="text-xs text-slate-400">
-                    Specify protocol remediation, compliance standards, and checkpoints.
-                  </p>
-                </div>
-              </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 overflow-y-auto">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-xl overflow-hidden shadow-2xl my-8">
+            <div className="bg-slate-850 px-6 py-5 border-b border-slate-800 flex items-center justify-between">
+              <h3 className="text-base font-bold text-white">
+                {editingTask ? 'Edit Action Item' : 'New Action Item'}
+              </h3>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Modal Body */}
-            <form onSubmit={handleSubmitForm} className="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
-              {/* Title */}
+            <form onSubmit={handleSubmitForm} className="p-6 space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                  Action Item Title *
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                  Action Title *
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Mandate Barcode Verification for Sepsis Antibiotics"
+                  placeholder="e.g. Mandate Barcode Verification in ICU"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:border-cyan-500"
                 />
               </div>
 
-              {/* Department, Priority & Stage Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
                     Department
                   </label>
                   <select
                     value={formData.department}
                     onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500"
+                    className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:border-cyan-500"
                   >
                     <option value="ICU">ICU</option>
                     <option value="Emergency">Emergency</option>
@@ -1057,13 +936,13 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                    Priority Severity
+                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                    Priority
                   </label>
                   <select
                     value={formData.priority}
                     onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500"
+                    className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:border-cyan-500"
                   >
                     <option value="CRITICAL">Critical</option>
                     <option value="HIGH">High</option>
@@ -1071,118 +950,26 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
                     <option value="LOW">Low</option>
                   </select>
                 </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                    Workflow Stage
-                  </label>
-                  <select
-                    value={formData.stage}
-                    onChange={(e) => setFormData({ ...formData, stage: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500"
-                  >
-                    <option value="BACKLOG">Audit Backlog</option>
-                    <option value="IN_PROGRESS">In Remediation</option>
-                    <option value="UNDER_REVIEW">Under Audit Review</option>
-                    <option value="RESOLVED">Compliant & Closed</option>
-                  </select>
-                </div>
               </div>
 
-              {/* Standard Code, Standard Body, Risk Reduction */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                    Standard Body
-                  </label>
-                  <select
-                    value={formData.standardBody}
-                    onChange={(e) => setFormData({ ...formData, standardBody: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500"
-                  >
-                    <option value="NABH">NABH (5th Edition)</option>
-                    <option value="JCI">JCI (7th Edition)</option>
-                    <option value="TJC">The Joint Commission</option>
-                    <option value="CDC">CDC NHSN</option>
-                    <option value="CMS">CMS Hospital Compare</option>
-                    <option value="GENERAL">General Hospital Standard</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                    Standard Code Ref
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. NABH-COP-01"
-                    value={formData.standardCode}
-                    onChange={(e) => setFormData({ ...formData, standardCode: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                    Est. Risk Reduction (pts)
-                  </label>
-                  <input
-                    type="number"
-                    step="0.5"
-                    value={formData.estimatedRiskReduction}
-                    onChange={(e) => setFormData({ ...formData, estimatedRiskReduction: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500"
-                  />
-                </div>
-              </div>
-
-              {/* Assignee & Due Date */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                    Assignee Officer
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Dr. Sarah Jenkins"
-                    value={formData.assigneeName}
-                    onChange={(e) => setFormData({ ...formData, assigneeName: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                    Target Due Date
-                  </label>
-                  <input
-                    type="date"
-                    value={formData.dueDate}
-                    onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500"
-                  />
-                </div>
-              </div>
-
-              {/* Description */}
               <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                  Detailed Findings & Corrective Action
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                  Description
                 </label>
                 <textarea
                   rows="3"
-                  placeholder="Root cause, clinical deviation observed, and required intervention protocol..."
+                  placeholder="Root cause and corrective action protocol..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:border-cyan-500"
                 />
               </div>
 
-              {/* Dynamic Checklist Checkpoints */}
+              {/* Dynamic Checkpoints */}
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-                    Protocol Implementation Checkpoints
+                    Checkpoints
                   </label>
                   <button
                     type="button"
@@ -1190,28 +977,27 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
                     className="text-xs font-bold text-cyan-400 hover:text-cyan-300 flex items-center space-x-1"
                   >
                     <Plus className="w-3.5 h-3.5" />
-                    <span>Add Checkpoint</span>
+                    <span>Add Step</span>
                   </button>
                 </div>
 
                 <div className="space-y-2">
                   {formData.checklists.map((item, idx) => (
                     <div key={idx} className="flex items-center space-x-2">
-                      <CheckSquare className="w-4 h-4 text-cyan-500 shrink-0" />
                       <input
                         type="text"
-                        placeholder={`Checkpoint #${idx + 1}`}
+                        placeholder={`Step #${idx + 1}`}
                         value={item.text}
                         onChange={(e) => updateChecklistRow(idx, e.target.value)}
-                        className="flex-1 px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500"
+                        className="flex-1 px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500"
                       />
                       {formData.checklists.length > 1 && (
                         <button
                           type="button"
                           onClick={() => removeChecklistRow(idx)}
-                          className="p-1.5 rounded text-slate-500 hover:text-rose-400"
+                          className="p-2 text-slate-500 hover:text-rose-400"
                         >
-                          <Trash2 className="w-3.5 h-3.5" />
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       )}
                     </div>
@@ -1219,34 +1005,19 @@ const KanbanBoard = ({ selectedDepartment = 'All' }) => {
                 </div>
               </div>
 
-              {/* Tags */}
-              <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                  Tags (comma separated)
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Sepsis, Barcode, Patient Safety, ICU"
-                  value={formData.tags}
-                  onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500"
-                />
-              </div>
-
-              {/* Modal Footer */}
               <div className="pt-4 border-t border-slate-800 flex items-center justify-end space-x-3">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
+                  className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs font-bold shadow-lg shadow-cyan-500/20"
+                  className="px-6 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold shadow-md shadow-cyan-500/20"
                 >
-                  {editingTask ? 'Save Changes' : 'Create CAPA Action'}
+                  {editingTask ? 'Save Changes' : 'Create Action'}
                 </button>
               </div>
             </form>
